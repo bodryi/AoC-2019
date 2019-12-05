@@ -179,8 +179,8 @@ function nounVerbTest(data, noun, verb) {
   program[1] = noun;
   program[2] = verb;
   let currentIndex = 0;
-  while (data[currentIndex] !== EXIT_CODE) {
-    const operation = data[currentIndex];
+  while (program[currentIndex] !== EXIT_CODE) {
+    const operation = program[currentIndex];
     program = operations[operation](
       program,
       program[currentIndex + 1],

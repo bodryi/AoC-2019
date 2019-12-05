@@ -175,9 +175,9 @@ const data = [
 
 let program = [...data];
 let currentIndex = 0;
-while (data[currentIndex] !== EXIT_CODE) {
+while (program[currentIndex] !== EXIT_CODE) {
   console.log(currentIndex);
-  const operation = data[currentIndex];
+  const operation = program[currentIndex];
   program = operations[operation](
     program,
     program[currentIndex + 1],
