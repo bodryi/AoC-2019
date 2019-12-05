@@ -3,9 +3,9 @@ const EXIT_CODE = 99;
 const TEST_INPUT = 1;
 
 const operations = {
-  1: (data, index1, index2, resultIndex, opArray) => {
+  1: (program, index1, index2, resultIndex, opArray) => {
     try {
-      const newData = [...data];
+      const newData = [...program];
       setValue(
         newData,
         resultIndex,
@@ -18,9 +18,9 @@ const operations = {
       throw new Error(`Addition error: ${e}`);
     }
   },
-  2: (data, index1, index2, resultIndex, opArray) => {
+  2: (program, index1, index2, resultIndex, opArray) => {
     try {
-      const newData = [...data];
+      const newData = [...program];
       setValue(
         newData,
         resultIndex,
@@ -37,7 +37,7 @@ const operations = {
     try {
       // getting input
       const input = TEST_INPUT;
-      const newData = [...data];
+      const newData = [...program];
       setValue(newData, index, input, opArray[0]);
       return newData;
     } catch (e) {
