@@ -38,7 +38,7 @@ const operations = {
       // getting input
       const input = TEST_INPUT;
       const newData = [...program];
-      setValue(newData, index, input, opArray[0]);
+      setValue(newData, index, input, opArray[2]);
       return newData;
     } catch (e) {
       throw new Error(`Input error: ${e}`);

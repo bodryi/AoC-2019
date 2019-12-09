@@ -37,7 +37,7 @@ const operations = {
     try {
       // getting input
       const newData = [...program];
-      setValue(newData, index, input, opArray[0]);
+      setValue(newData, index, input, opArray[2]);
       return newData;
     } catch (e) {
       throw new Error(`Input error: ${e}`);
@@ -177,7 +177,7 @@ function runProgram(program, phase, input) {
         currentIndex = stepForward(currentIndex, 2);
 
         // speed up because of skipping the rest of programm
-        // return out; 
+        // return out;
         break;
       }
       case 5:
@@ -206,25 +206,6 @@ function runSequenceTest(prog, sequence) {
   }
 
   return output;
-}
-
-function getSequences(
-  elementsSet,
-  size,
-  resSquences,
-  sequence = [],
-  start = 0,
-  index = 0
-) {
-  if (index === size) {
-    resSquences.push([...sequence]);
-    return;
-  }
-  const end = elementsSet.length - 1;
-  for (let i = start; i <= end && end - i + 1 >= size - index; i++) {
-    sequence[index] = elementsSet[i];
-    getSequences(elementsSet, size, resSquences, sequence, i + 1, index + 1);
-  }
 }
 
 function nextPermutation(sequence) {
@@ -270,11 +251,7 @@ const data = `3,8,1001,8,10,8,105,1,0,0,21,34,51,68,89,98,179,260,341,422,99999,
   .split(",")
   .map(n => +n);
 
-const sequences = [];
-getSequences([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 5, sequences);
-const allSequences = sequences
-  .map(seq => getAllPermutations(seq))
-  .reduce((acc, curr) => acc.concat(curr), []);
+const allSequences = getAllPermutations([0, 1, 2, 3, 4]);
 
 let maxOuput = 0;
 for (let i = 0; i < allSequences.length; i++) {

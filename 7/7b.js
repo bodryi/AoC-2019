@@ -39,7 +39,7 @@ const operations = {
     try {
       // getting input
       const newData = [...program];
-      setValue(newData, index, input, opArray[0]);
+      setValue(newData, index, input, opArray[2]);
       return newData;
     } catch (e) {
       throw new Error(`Input error: ${e}`);
@@ -331,14 +331,7 @@ const data = `3,8,1001,8,10,8,105,1,0,0,21,34,51,68,89,98,179,260,341,422,99999,
   .split(",")
   .map(n => +n);
 
-// const data = TEST_DATA.split(",").map(n => +n);
-// const allSequences = [[9, 8, 7, 6, 5]];
-
-const sequences = [];
-getSequences([5, 6, 7, 8, 9], 5, sequences);
-const allSequences = sequences
-  .map(seq => getAllPermutations(seq))
-  .reduce((acc, curr) => acc.concat(curr), []);
+const allSequences = getAllPermutations([5, 6, 7, 8, 9]);
 
 let maxOuput = 0;
 for (let i = 0; i < allSequences.length; i++) {
