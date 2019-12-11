@@ -241,53 +241,6 @@ function runSequenceTest(prog, sequence) {
   return output;
 }
 
-function detectLoop(collection, valuesCollection, index, value) {
-  const newCollection = [...collection];
-  const newVCollection = [...valuesCollection];
-  let isLoop = false;
-
-  newCollection.push(index);
-  newVCollection.push(value);
-
-  if (newCollection.length && !(newCollection.length % 2)) {
-    const part1 = newCollection.slice(0, newCollection.length / 2).join("");
-    const part2 = newCollection
-      .slice(newCollection.length / 2, newCollection.length)
-      .join("");
-
-    const partV1 = newVCollection.slice(0, newVCollection.length / 2).join("");
-    const partV2 = newVCollection
-      .slice(newVCollection.length / 2, newVCollection.length)
-      .join("");
-    isLoop = part1 === part2 && partV1 === partV2;
-  }
-
-  return {
-    collection: newCollection,
-    isLoop,
-    valuesCollection: newVCollection
-  };
-}
-
-function getSequences(
-  elementsSet,
-  size,
-  resSquences,
-  sequence = [],
-  start = 0,
-  index = 0
-) {
-  if (index === size) {
-    resSquences.push([...sequence]);
-    return;
-  }
-  const end = elementsSet.length - 1;
-  for (let i = start; i <= end && end - i + 1 >= size - index; i++) {
-    sequence[index] = elementsSet[i];
-    getSequences(elementsSet, size, resSquences, sequence, i + 1, index + 1);
-  }
-}
-
 function nextPermutation(sequence) {
   let i = sequence.length;
   do {
