@@ -76,6 +76,18 @@ function gcd(a, b) {
   return gcd(b % a, a);
 }
 
+function lcm(arr) {
+  if (!arr.length) {
+    throw new Error("LCM: wrong params passed");
+  }
+  let res = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    res = (arr[i] * res) / gcd(arr[i], res);
+  }
+
+  return res;
+}
+
 const data =
   "<x=-4, y=3, z=15>\n" +
   "<x=-11, y=-10, z=13>\n" +
@@ -135,17 +147,24 @@ const stepsForEachCoordinate = [
   coordinatesEqualToInitial.z.steps
 ];
 
+const lcms = [];
 for (let i = 0; i < stepsForEachCoordinate[0].length; i++) {
   for (let j = 0; j < stepsForEachCoordinate[1].length; j++) {
     for (let k = 0; k < stepsForEachCoordinate[2].length; k++) {
-      // Find LCM for all triples and get the least of them
-      console.log(
-        stepsForEachCoordinate[0][i],
-        stepsForEachCoordinate[1][j],
-        stepsForEachCoordinate[2][k]
+      lcms.push(
+        lcm([
+          stepsForEachCoordinate[0][i],
+          stepsForEachCoordinate[1][j],
+          stepsForEachCoordinate[2][k]
+        ])
       );
     }
   }
 }
 
+const answer = lcms.reduce(
+  (min, curr) => (curr < min ? curr : min),
+  Number.MAX_SAFE_INTEGER
+);
+console.log(answer);
 // 292653556339368;
