@@ -67,6 +67,21 @@ function compareStatesCoordinate(state1, state2, coordinate) {
   return true;
 }
 
+function stoppedAtDirection(state, coordinate) {
+  for (let i = 0; i < state.length; i++) {
+    if (
+      !(
+        !state[i].vel[coordinate] &&
+        !state[i].vel[coordinate] &&
+        !state[i].vel[coordinate]
+      )
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function copy(moons) {
   return JSON.parse(JSON.stringify(moons));
 }
@@ -117,54 +132,38 @@ while (true) {
 
   if (
     compareStatesCoordinate(moons, initialState, "x") &&
-    coordinatesEqualToInitial.x.steps.length < 2
+    stoppedAtDirection(moons, "x") &&
+    !coordinatesEqualToInitial.x.steps.length
   ) {
     coordinatesEqualToInitial.x.steps.push(step);
   }
   if (
     compareStatesCoordinate(moons, initialState, "y") &&
-    coordinatesEqualToInitial.y.steps.length < 2
+    stoppedAtDirection(moons, "y") &&
+    !coordinatesEqualToInitial.y.steps.length
   ) {
     coordinatesEqualToInitial.y.steps.push(step);
   }
   if (
     compareStatesCoordinate(moons, initialState, "z") &&
-    coordinatesEqualToInitial.z.steps.length < 2
+    stoppedAtDirection(moons, "z") &&
+    !coordinatesEqualToInitial.z.steps.length
   ) {
     coordinatesEqualToInitial.z.steps.push(step);
   }
   if (
-    coordinatesEqualToInitial.x.steps.length === 2 &&
-    coordinatesEqualToInitial.y.steps.length === 2 &&
-    coordinatesEqualToInitial.z.steps.length === 2
+    coordinatesEqualToInitial.x.steps.length &&
+    coordinatesEqualToInitial.y.steps.length &&
+    coordinatesEqualToInitial.z.steps.length
   ) {
     break;
   }
 }
 const stepsForEachCoordinate = [
-  coordinatesEqualToInitial.x.steps,
-  coordinatesEqualToInitial.y.steps,
-  coordinatesEqualToInitial.z.steps
+  ...coordinatesEqualToInitial.x.steps,
+  ...coordinatesEqualToInitial.y.steps,
+  ...coordinatesEqualToInitial.z.steps
 ];
 
-const lcms = [];
-for (let i = 0; i < stepsForEachCoordinate[0].length; i++) {
-  for (let j = 0; j < stepsForEachCoordinate[1].length; j++) {
-    for (let k = 0; k < stepsForEachCoordinate[2].length; k++) {
-      lcms.push(
-        lcm([
-          stepsForEachCoordinate[0][i],
-          stepsForEachCoordinate[1][j],
-          stepsForEachCoordinate[2][k]
-        ])
-      );
-    }
-  }
-}
-
-const answer = lcms.reduce(
-  (min, curr) => (curr < min ? curr : min),
-  Number.MAX_SAFE_INTEGER
-);
-console.log(answer);
+console.log(lcm(stepsForEachCoordinate));
 // 292653556339368;
