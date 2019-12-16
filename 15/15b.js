@@ -335,7 +335,7 @@ const data = "3,1033,1008,1033,1,1032,1005,1032,31,1008,1033,2,1032,1005,1032,58
   .split(",")
   .map(n => +n);
 
-const labyrinth = [
+let labyrinth = [
   {
     x: 0,
     y: 0,
@@ -351,43 +351,24 @@ const labyrinth = [
 ];
 runProgram();
 
-const minX = labyrinth.reduce(
-  (minX, curr) => (curr.x < minX ? curr.x : minX),
-  0
-);
-const maxX = labyrinth.reduce(
-  (maxX, curr) => (curr.x > maxX ? curr.x : maxX),
-  0
-);
-const minY = labyrinth.reduce(
-  (minY, curr) => (curr.y < minY ? curr.y : minY),
-  0
-);
-const maxY = labyrinth.reduce(
-  (maxY, curr) => (curr.y > maxY ? curr.y : maxY),
-  0
-);
+const oxygenCell = labyrinth.find(c => c.type === reply.OXYGEN_SYSTEM_FOUND);
 
-let labyrinthVisualisation = "";
-for (let i = Math.abs(minY) + Math.abs(maxY); i >= 0; i--) {
-  for (let j = 0; j <= Math.abs(minX) + Math.abs(maxX); j++) {
-    const cell = labyrinth.find(c => c.x === j + minX && c.y === i + minY);
-    if (cell && !cell.x && !cell.y) {
-      labyrinthVisualisation += "S";
-      continue;
-    }
-    if (cell && cell.type === reply.OXYGEN_SYSTEM_FOUND) {
-      labyrinthVisualisation += "F";
-      continue;
-    }
-    labyrinthVisualisation += cell
-      ? cell.type === reply.WALL
-        ? "#"
-        : "."
-      : " ";
+labyrinth = [
+  {
+    ...oxygenCell,
+    d: 0,
+    type: reply.OXYGEN_SYSTEM_FOUND,
+    path: []
   }
-  labyrinthVisualisation += "\n";
-}
+];
+runProgram();
 
-console.log(labyrinthVisualisation);
-console.log(labyrinth.find(c => c.type === reply.OXYGEN_SYSTEM_FOUND).d);
+const stepsToEachEmptySpace = labyrinth
+  .filter(c => c.type === reply.MOVE_OK)
+  .map(c => c.d);
+const max = stepsToEachEmptySpace.reduce(
+  (max, curr) => (curr > max ? curr : max),
+  Number.MIN_SAFE_INTEGER
+);
+
+console.log(max);
