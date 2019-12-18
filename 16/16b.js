@@ -1,6 +1,7 @@
 /**
  *
  * Offset is beyond half of input data, so for every element after offset pattern values will be equal 1
+ * pahse() can be improved to support other pattern values
  */
 
 const BOUND = 100;
@@ -17,10 +18,8 @@ function phase(input, patternBase, offset) {
 
 function getRepeatedInput(input, repeatTimes) {
   const res = new Array(input.length * repeatTimes);
-  for (let i = 0; i < repeatTimes; i++) {
-    for (let j = 0; j < input.length; j++) {
-      res[i * input.length + j] = input[j];
-    }
+  for (let i = 0; i < res.length; i++) {
+    res[i] = input[i % input.length];
   }
   return res;
 }
