@@ -314,6 +314,19 @@ function getSurroundingScaffolds(map, pos) {
   return res;
 }
 
+function getDirectionNameByValue(value) {
+  switch (value) {
+    case directions.UP:
+      return "UP";
+    case directions.DOWN:
+      return "DOWN";
+    case directions.LEFT:
+      return "LEFT";
+    case directions.RIGHT:
+      return "RIGHT";
+  }
+}
+
 function getTurnDirection(currentDirection, neededDirection) {
   switch (currentDirection) {
     case directions.UP: {
@@ -369,6 +382,40 @@ function getTurnDirection(currentDirection, neededDirection) {
   }
 }
 
+function turnLeftOrRight(availableDirections, currentDirection) {
+  switch (currentDirection) {
+    case "UP":
+      return availableDirections.find(name => name === "LEFT")
+        ? "LEFT"
+        : "RIGHT";
+    case "LEFT":
+      return availableDirections.find(name => name === "DOWN") ? "DOWN" : "UP";
+    case "DOWN":
+      return availableDirections.find(name => name === "RIGHT")
+        ? "RIGHT"
+        : "LEFT";
+    case "RIGHT":
+      return availableDirections.find(name => name === "UP") ? "UP" : "DOWN";
+  }
+}
+
+// function turnRightOrLeft(availableDirections, currentDirection) {
+//   switch (currentDirection) {
+//     case "UP":
+//       return availableDirections.find(name => name === "RIGHT")
+//         ? "RIGHT"
+//         : "LEFT";
+//     case "LEFT":
+//       return availableDirections.find(name => name === "UP") ? "UP" : "DOWN";
+//     case "DOWN":
+//       return availableDirections.find(name => name === "LEFT")
+//         ? "LEFT"
+//         : "RIGHT";
+//     case "RIGHT":
+//       return availableDirections.find(name => name === "DOWN") ? "DOWN" : "UP";
+//   }
+// }
+
 const startPos = parsedMap.find(el => el.value === directions.UP);
 const lastPos = parsedMap.find(
   el =>
@@ -376,12 +423,37 @@ const lastPos = parsedMap.find(
     getSurroundingScaffolds(parsedMap, el).count === 1
 );
 let currentPos = { ...startPos };
-let currentDirection = startPos.value;
-console.log(currentPos);
-console.log(lastPos);
+let currentDirectionName = getDirectionNameByValue(startPos.value);
+const path = [];
 
 while (currentPos.x !== lastPos.x && currentPos.y !== lastPos.y) {
   const surroundings = getSurroundingScaffolds(parsedMap, currentPos);
+  let directionName;
   if (currentPos.x === startPos.x && currentPos.y === startPos.y) {
+    directionName = surroundings.availableDirections[0];
+  } else {
+    directionName = surroundings.availableDirections.find(
+      name => name === currentDirectionName
+    )
+      ? currentDirectionName
+      : turnLeftOrRight(surroundings.availableDirections, currentDirectionName);
   }
+  const turnDirection =
+    currentDirectionName !== directionName
+      ? getTurnDirection(
+          directions[currentDirectionName],
+          directions[directionName]
+        )
+      : null;
+
+  if (turnDirection) {
+    path.push({ action: turnDirection, steps: 1 });
+  } else {
+    path[path.length - 1].steps++;
+  }
+
+  currentPos = surroundings[directionName];
+  currentDirectionName = directionName;
 }
+
+console.log(path);
